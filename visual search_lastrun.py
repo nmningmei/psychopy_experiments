@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy2 Experiment Builder (v1.85.1),
-    on June 08, 2017, at 18:00
+    on June 08, 2017, at 19:49
 If you publish work using this script please cite the PsychoPy publications:
     Peirce, JW (2007) PsychoPy - Psychophysics software in Python.
         Journal of Neuroscience Methods, 162(1-2), 8-13.
@@ -40,7 +40,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath=u'D:\\psychopy experiments\\visual search.psyexp',
+    originPath=u'D:\\NING - spindle\\psychopy_experiments\\visual search.psyexp',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -67,16 +67,62 @@ else:
 # Initialize components for Routine "instruction"
 instructionClock = core.Clock()
 text = visual.TextStim(win=win, name='text',
-    text='You will see x or o in the experiment.\nThey will be presented in different colors.\nYour task is to tell us whether the red x is presented\nPress "1" when it is presented, and press "4" when it not presented\nPress "space" to move on when you are ready',
-    font='Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1,
+    text=u"Press 'up' if target is the same as original",
+    font=u'Arial',
+    pos=(0, 0.1), height=0.1, wrapWidth=None, ori=0, 
+    color=u'white', colorSpace='rgb', opacity=1,
     depth=0.0);
+text_3 = visual.TextStim(win=win, name='text_3',
+    text=u"Press 'left' if target rotates to the left compared to the original",
+    font=u'Arial',
+    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
+    color=u'white', colorSpace='rgb', opacity=1,
+    depth=-1.0);
+text_4 = visual.TextStim(win=win, name='text_4',
+    text=u"Press 'right' if target rotates to the right compared to the original",
+    font=u'Arial',
+    pos=(0, -0.1), height=0.1, wrapWidth=None, ori=0, 
+    color=u'white', colorSpace='rgb', opacity=1,
+    depth=-2.0);
 
 # Initialize components for Routine "experiment"
 experimentClock = core.Clock()
-import matplotlib.pyplot as plt
-plt.plot(np.random.random(50))
+Fixation = visual.TextStim(win=win, name='Fixation',
+    text=u'+',
+    font=u'Arial',
+    pos=(0, 0), height=0.3, wrapWidth=None, ori=0, 
+    color=u'white', colorSpace='rgb', opacity=1,
+    depth=0.0);
+target = visual.GratingStim(
+    win=win, name='target',
+    tex=u'sin', mask=u'circle',
+    ori=1.0, pos=(-0.5, 0), size=(0.5, 0.5), sf=[4,5], phase=0.0,
+    color=[1,1,1], colorSpace='rgb', opacity=1,
+    texRes=128, interpolate=True, depth=-1.0)
+original = visual.GratingStim(
+    win=win, name='original',
+    tex=u'sin', mask=u'circle',
+    ori=1.0, pos=(0.5, 0), size=(0.5, 0.5), sf=[4,5], phase=0.0,
+    color=[1,1,1], colorSpace='rgb', opacity=1,
+    texRes=128, interpolate=True, depth=-2.0)
+text_2 = visual.TextStim(win=win, name='text_2',
+    text=u"Press 'up' if target is the same as original",
+    font=u'Arial',
+    pos=(0, 0.1), height=0.1, wrapWidth=None, ori=0, 
+    color=u'white', colorSpace='rgb', opacity=1,
+    depth=-3.0);
+text_5 = visual.TextStim(win=win, name='text_5',
+    text=u"Press 'left' if target rotates to the left compared to the original\n",
+    font=u'Arial',
+    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
+    color=u'white', colorSpace='rgb', opacity=1,
+    depth=-5.0);
+text_6 = visual.TextStim(win=win, name='text_6',
+    text=u"Press 'right' if target rotates to the right compared to the original",
+    font=u'Arial',
+    pos=(0, -0.1), height=0.1, wrapWidth=None, ori=0, 
+    color=u'white', colorSpace='rgb', opacity=1,
+    depth=-6.0);
 
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
@@ -90,7 +136,7 @@ continueRoutine = True
 # update component parameters for each repeat
 key_resp_2 = event.BuilderKeyResponse()
 # keep track of which components have finished
-instructionComponents = [text, key_resp_2]
+instructionComponents = [text, text_3, text_4, key_resp_2]
 for thisComponent in instructionComponents:
     if hasattr(thisComponent, 'status'):
         thisComponent.status = NOT_STARTED
@@ -108,6 +154,20 @@ while continueRoutine:
         text.tStart = t
         text.frameNStart = frameN  # exact frame index
         text.setAutoDraw(True)
+    
+    # *text_3* updates
+    if t >= 0.0 and text_3.status == NOT_STARTED:
+        # keep track of start time/frame for later
+        text_3.tStart = t
+        text_3.frameNStart = frameN  # exact frame index
+        text_3.setAutoDraw(True)
+    
+    # *text_4* updates
+    if t >= 0.0 and text_4.status == NOT_STARTED:
+        # keep track of start time/frame for later
+        text_4.tStart = t
+        text_4.frameNStart = frameN  # exact frame index
+        text_4.setAutoDraw(True)
     
     # *key_resp_2* updates
     if t >= 1 and key_resp_2.status == NOT_STARTED:
@@ -186,9 +246,11 @@ for thisTrial in trials:
     frameN = -1
     continueRoutine = True
     # update component parameters for each repeat
-    
+    target.setOri(gabor)
+    original.setOri(conditions)
+    response = event.BuilderKeyResponse()
     # keep track of which components have finished
-    experimentComponents = []
+    experimentComponents = [Fixation, target, original, text_2, response, text_5, text_6]
     for thisComponent in experimentComponents:
         if hasattr(thisComponent, 'status'):
             thisComponent.status = NOT_STARTED
@@ -200,6 +262,82 @@ for thisTrial in trials:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
+        # *Fixation* updates
+        if t >= 0.0 and Fixation.status == NOT_STARTED:
+            # keep track of start time/frame for later
+            Fixation.tStart = t
+            Fixation.frameNStart = frameN  # exact frame index
+            Fixation.setAutoDraw(True)
+        frameRemains = 0.0 + 1.0- win.monitorFramePeriod * 0.75  # most of one frame period left
+        if Fixation.status == STARTED and t >= frameRemains:
+            Fixation.setAutoDraw(False)
+        
+        # *target* updates
+        if t >= 0.0 and target.status == NOT_STARTED:
+            # keep track of start time/frame for later
+            target.tStart = t
+            target.frameNStart = frameN  # exact frame index
+            target.setAutoDraw(True)
+        frameRemains = 0.0 + 1.0- win.monitorFramePeriod * 0.75  # most of one frame period left
+        if target.status == STARTED and t >= frameRemains:
+            target.setAutoDraw(False)
+        
+        # *original* updates
+        if t >= 0.0 and original.status == NOT_STARTED:
+            # keep track of start time/frame for later
+            original.tStart = t
+            original.frameNStart = frameN  # exact frame index
+            original.setAutoDraw(True)
+        frameRemains = 0.0 + 1.0- win.monitorFramePeriod * 0.75  # most of one frame period left
+        if original.status == STARTED and t >= frameRemains:
+            original.setAutoDraw(False)
+        
+        # *text_2* updates
+        if t >= 1 and text_2.status == NOT_STARTED:
+            # keep track of start time/frame for later
+            text_2.tStart = t
+            text_2.frameNStart = frameN  # exact frame index
+            text_2.setAutoDraw(True)
+        
+        # *response* updates
+        if t >= 1 and response.status == NOT_STARTED:
+            # keep track of start time/frame for later
+            response.tStart = t
+            response.frameNStart = frameN  # exact frame index
+            response.status = STARTED
+            # keyboard checking is just starting
+            win.callOnFlip(response.clock.reset)  # t=0 on next screen flip
+            event.clearEvents(eventType='keyboard')
+        if response.status == STARTED:
+            theseKeys = event.getKeys(keyList=['left', 'right', 'up'])
+            
+            # check for quit:
+            if "escape" in theseKeys:
+                endExpNow = True
+            if len(theseKeys) > 0:  # at least one key was pressed
+                response.keys = theseKeys[-1]  # just the last key pressed
+                response.rt = response.clock.getTime()
+                # was this 'correct'?
+                if (response.keys == str(u'corrAns')) or (response.keys == u'corrAns'):
+                    response.corr = 1
+                else:
+                    response.corr = 0
+                # a response ends the routine
+                continueRoutine = False
+        
+        # *text_5* updates
+        if t >= 1 and text_5.status == NOT_STARTED:
+            # keep track of start time/frame for later
+            text_5.tStart = t
+            text_5.frameNStart = frameN  # exact frame index
+            text_5.setAutoDraw(True)
+        
+        # *text_6* updates
+        if t >= 1 and text_6.status == NOT_STARTED:
+            # keep track of start time/frame for later
+            text_6.tStart = t
+            text_6.frameNStart = frameN  # exact frame index
+            text_6.setAutoDraw(True)
         
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine
@@ -222,13 +360,24 @@ for thisTrial in trials:
     for thisComponent in experimentComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    
+    # check responses
+    if response.keys in ['', [], None]:  # No response was made
+        response.keys=None
+        # was no response the correct answer?!
+        if str(u'corrAns').lower() == 'none':
+           response.corr = 1  # correct non-response
+        else:
+           response.corr = 0  # failed to respond (incorrectly)
+    # store data for trials (TrialHandler)
+    trials.addData('response.keys',response.keys)
+    trials.addData('response.corr', response.corr)
+    if response.keys != None:  # we had a response
+        trials.addData('response.rt', response.rt)
     # the Routine "experiment" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     thisExp.nextEntry()
     
 # completed 1 repeats of 'trials'
-
 
 # these shouldn't be strictly necessary (should auto-save)
 thisExp.saveAsWideText(filename+'.csv')

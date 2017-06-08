@@ -1,0 +1,4 @@
+color,start,congruent,word,corrAns,trials.thisRepN,trials.thisTrialN,trials.thisN,trials.thisIndex,response.keys,response.corr,response.rt,date,frameRate,expName,session,participant,
+green,0.1,1,green,left,0,0,0,2,left,1,1.98773594105,2017_Jun_07_1551,60.0552358952,test,001,,
+blue,1.0,0,green,right,0,1,1,3,right,1,1.05901955746,2017_Jun_07_1551,60.0552358952,test,001,,
+red,0.1,1,red,left,0,2,2,0,right,0,1.28164683533,2017_Jun_07_1551,60.0552358952,test,001,,

@@ -9,35 +9,41 @@ import pandas as pd
 from collections import Counter
 
 
-
+def make_equal(temp,deviation_count,deviationAway):
+    while np.std(deviation_count) >2.5:
+        temp = np.random.choice(deviationAway,size=temp.size,replace=True,)
+        deviation_count = [v for v in dict(Counter(temp)).values()]
+        
+    return temp
+def correct_response(x):
+    if x > 0:
+        return 'right'
+    elif x < 0:
+        return 'left'
+    else:
+        return 'up'
+        
 totalTrials = 800
 numberofLines = 101
-experimentmatrix={}
 conditions= [0,45,90,135]
-experimentmatrix['conditions']= conditions * int(totalTrials/len(conditions))
-deviationAway=np.linspace(-5,5,11)
+deviationAway=np.linspace(-5,5,11)*2
 deviationAway=deviationAway[deviationAway!=0]
-ones = np.ones(int(totalTrials/len(conditions)/4))
-zeros= np.zeros(int(totalTrials/len(conditions)/4*3))
-matchRate = np.random.choice(np.concatenate([ones,zeros]),size=len(ones)+len(zeros),replace=False)
-idx0   = np.random.choice(matchRate,size=matchRate.size,replace=False)
-idx45  = np.random.choice(matchRate,size=matchRate.size,replace=False)
-idx90  = np.random.choice(matchRate,size=matchRate.size,replace=False)
-idx135 = np.random.choice(matchRate,size=matchRate.size,replace=False)
-matchRateVector = np.concatenate([idx0,idx45,idx90,idx135])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-experimentmatrix.to_csv('D:/psychopy experiments/experiment matrix.csv',index=False)
+ones = np.ones(int(totalTrials/len(conditions)/4)) # 25% match
+zeros= np.zeros(int(totalTrials/len(conditions)/4*3)) # 75% mismatch
+matchCondition = np.array(conditions * int(totalTrials/len(conditions)*0.25))
+df_match = pd.DataFrame({'conditions':matchCondition,
+             'match':np.ones(matchCondition.shape),
+             'deviationAway':np.zeros(matchCondition.size)})
+mistmatchCondition = np.array(conditions * int(totalTrials/len(conditions)*0.75))
+temp = np.random.choice(deviationAway,size=mistmatchCondition.size,replace=True,)
+deviation_count = [v for v in dict(Counter(temp)).values()]
+temp = make_equal(temp,deviation_count,deviationAway)
+df_mismatch = pd.DataFrame({'conditions':mistmatchCondition,
+             'match':np.zeros(mistmatchCondition.shape),
+             'deviationAway':temp
+        })
+experimentmatrix = pd.concat([df_match,df_mismatch])
+experimentmatrix['gabor'] = experimentmatrix['conditions'] + experimentmatrix['deviationAway']
+experimentmatrix['corrAns'] = experimentmatrix['deviationAway'].apply(correct_response)
+experimentmatrix = experimentmatrix.sample(frac=1).reset_index(drop=True)
+experimentmatrix.to_csv('D:/NING - spindle/psychopy_experiments/experiment matrix.csv',index=False)

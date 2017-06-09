@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy2 Experiment Builder (v1.85.1),
-    on June 08, 2017, at 20:19
+    on June 08, 2017, at 20:10
 If you publish work using this script please cite the PsychoPy publications:
     Peirce, JW (2007) PsychoPy - Psychophysics software in Python.
         Journal of Neuroscience Methods, 162(1-2), 8-13.
@@ -40,7 +40,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath=u'D:\\NING - spindle\\psychopy_experiments\\visual search.psyexp',
+    originPath=None,
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -135,12 +135,6 @@ label_target = visual.TextStim(win=win, name='label_target',
     pos=(0.5, 0.4), height=0.1, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1,
     depth=-8.0);
-text = visual.TextStim(win=win, name='text',
-    text='default text',
-    font=u'Arial',
-    pos=(-0.7, 0.8), height=0.1, wrapWidth=None, ori=0, 
-    color=u'white', colorSpace='rgb', opacity=1,
-    depth=-9.0);
 
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
@@ -267,9 +261,8 @@ for thisTrial in trials:
     target.setOri(gabor)
     original.setOri(conditions)
     response = event.BuilderKeyResponse()
-    text.setText(trials)
     # keep track of which components have finished
-    experimentComponents = [Fixation, target, original, instruction_1, response, instruction_2, instruction_3, label_original, label_target, text]
+    experimentComponents = [Fixation, target, original, instruction_1, response, instruction_2, instruction_3, label_original, label_target]
     for thisComponent in experimentComponents:
         if hasattr(thisComponent, 'status'):
             thisComponent.status = NOT_STARTED
@@ -377,13 +370,6 @@ for thisTrial in trials:
         frameRemains = 0.0 + 1.0- win.monitorFramePeriod * 0.75  # most of one frame period left
         if label_target.status == STARTED and t >= frameRemains:
             label_target.setAutoDraw(False)
-        
-        # *text* updates
-        if t >= 0.0 and text.status == NOT_STARTED:
-            # keep track of start time/frame for later
-            text.tStart = t
-            text.frameNStart = frameN  # exact frame index
-            text.setAutoDraw(True)
         
         # check if all components have finished
         if not continueRoutine:  # a component has requested a forced-end of Routine

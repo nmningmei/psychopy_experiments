@@ -22,7 +22,13 @@ def correct_response(x):
         return 'left'
     else:
         return 'up'
-        
+def make_trials_report(n):
+    idx_row = np.arange(n) +1
+    temp = []
+    for ii in idx_row:
+        #temp.append('%d of %d'%(ii,len(idx_row)))
+        temp.append(str(ii))
+    return temp        
 totalTrials = 800
 numberofLines = 101
 conditions= [0,45,90,135]
@@ -46,4 +52,5 @@ experimentmatrix = pd.concat([df_match,df_mismatch])
 experimentmatrix['gabor'] = experimentmatrix['conditions'] + experimentmatrix['deviationAway']
 experimentmatrix['corrAns'] = experimentmatrix['deviationAway'].apply(correct_response)
 experimentmatrix = experimentmatrix.sample(frac=1).reset_index(drop=True)
+experimentmatrix['trials']=make_trials_report(len(experimentmatrix))
 experimentmatrix.to_csv('D:/NING - spindle/psychopy_experiments/experiment matrix.csv',index=False)

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v3.2.4),
-    on January 30, 2020, at 15:04
+    on January 30, 2020, at 15:35
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -35,7 +35,7 @@ os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '3.2.4'
 expName = 'test'  # from the Builder filename that created this script
-expInfo = {'participant': '', 'session': '001', 'im_size': '1024', 'maskdur': '2'}
+expInfo = {'participant': '', 'session': '001', 'im_size': '1024', 'premask': '0', 'postmask': '2'}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
@@ -80,40 +80,32 @@ defaultKeyboard = keyboard.Keyboard()
 
 # Initialize components for Routine "present_gabor"
 present_gaborClock = core.Clock()
-print_spatial_freq = visual.TextStim(win=win, name='print_spatial_freq',
-    text='default text',
-    font='Arial',
-    pos=(0, 0.35), height=0.05, wrapWidth=None, ori=0, 
-    color='white', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=0.0);
 grating = visual.GratingStim(
     win=win, name='grating',units='pix', 
     tex='sin', mask='sin',
     ori=1.0, pos=(0, 0), size=1.0, sf=1.0, phase=0,
     color=[1,1,1], colorSpace='rgb', opacity=1.0,blendmode='avg',
-    texRes=128, interpolate=False, depth=-1.0)
+    texRes=128, interpolate=False, depth=0.0)
 im_size = int(expInfo['im_size'])
-maskdur = float(expInfo['maskdur'])
-#INITIALISE SOME STIMULI
-grating1 = visual.GratingStim(win, mask="gauss",
-                              color=[1.0, 1.0, 1.0],
-                              opacity=1.0,
-                              size=(im_size, im_size),
-                              units = 'pix',
-                              sf=(0.06,0), ori=45)
 
-grating2 = visual.GratingStim(win, mask="gauss",
-                              color=[1.0, 1.0, 1.0],
-                              opacity=0.5,
-                              size=(im_size, im_size),
-                              units = 'pix',
-                              sf=(.06,0), ori=135)
+premask = int(expInfo['premask'])
+postmask = int(expInfo['postmask'])
+
+k = 210
+mask_directions = [k,k + 90]
 
 
 
 # Initialize components for Routine "response"
 responseClock = core.Clock()
+left_right = keyboard.Keyboard()
+message = visual.TextStim(win=win, name='message',
+    text='+',
+    font='Arial',
+    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
+    color='white', colorSpace='rgb', opacity=1, 
+    languageStyle='LTR',
+    depth=-1.0);
 
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
@@ -140,27 +132,40 @@ for thisTrial in trials:
     
     # ------Prepare to start Routine "present_gabor"-------
     # update component parameters for each repeat
-    print_spatial_freq.setText(f'''op = {opacity},ori = {orientation},
-sf = {spatial_freq:.2f},mask = {mask}
-ct = {contrast:.3f},dur = {duration:.2f}''')
     grating.setOpacity(opacity)
     grating.setSize((int(expInfo['im_size']), int(expInfo['im_size'])))
     grating.setOri(orientation)
     grating.setMask(mask)
     grating.setSF(spatial_freq)
     grating.contrast = contrast
-    gabor_tex = (
-    visual.filters.makeGrating(res = im_size,
-        cycles = im_size * spatial_freq) *
-    visual.filters.makeMask(matrixSize = im_size,
-            shape = 'gauss',range=[0,.01])
-    )
+    #gabor_tex = (
+    #visual.filters.makeGrating(res = im_size,
+    #    cycles = im_size * spatial_freq) *
+    #visual.filters.makeMask(matrixSize = im_size,
+    #        shape = 'gauss',range=[0,.01]))
     #grating.tex = gabor_tex
     #grating.tex = np.random.random([im_size,im_size])*2. - 1.
     
+    #np.random.shuffle(mask_directions)
+    #INITIALISE SOME STIMULI
+    grating1 = visual.GratingStim(win, mask="gauss",
+                                  color=[1.0, 1.0, 1.0],
+                                  opacity=1.0,
+                                  size=(im_size, im_size),
+                                  units = 'pix',
+                                  sf=(0.02,0), ori=mask_directions[0])
+    
+    grating2 = visual.GratingStim(win, mask="gauss",
+                                  color=[1.0, 1.0, 1.0],
+                                  opacity=0.5,
+                                  size=(im_size, im_size),
+                                  units = 'pix',
+                                  sf=(.02,0), ori=mask_directions[1])
+    
+    
     trialClock = core.Clock()
     t = 0
-    while t < maskdur:    # quits after some secs
+    while t < premask:    # quits after some secs
     
         t = trialClock.getTime()
     
@@ -177,7 +182,7 @@ ct = {contrast:.3f},dur = {duration:.2f}''')
             if keys in ['escape','q']:
                 core.quit()
     # keep track of which components have finished
-    present_gaborComponents = [print_spatial_freq, grating]
+    present_gaborComponents = [grating]
     for thisComponent in present_gaborComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -200,23 +205,6 @@ ct = {contrast:.3f},dur = {duration:.2f}''')
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
-        
-        # *print_spatial_freq* updates
-        if print_spatial_freq.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            print_spatial_freq.frameNStart = frameN  # exact frame index
-            print_spatial_freq.tStart = t  # local t and not account for scr refresh
-            print_spatial_freq.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(print_spatial_freq, 'tStartRefresh')  # time at next scr refresh
-            print_spatial_freq.setAutoDraw(True)
-        if print_spatial_freq.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > print_spatial_freq.tStartRefresh + duration-frameTolerance:
-                # keep track of stop time/frame for later
-                print_spatial_freq.tStop = t  # not accounting for scr refresh
-                print_spatial_freq.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(print_spatial_freq, 'tStopRefresh')  # time at next scr refresh
-                print_spatial_freq.setAutoDraw(False)
         
         # *grating* updates
         if grating.status == NOT_STARTED and tThisFlip >= 0-frameTolerance:
@@ -256,13 +244,12 @@ ct = {contrast:.3f},dur = {duration:.2f}''')
     for thisComponent in present_gaborComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    trials.addData('print_spatial_freq.started', print_spatial_freq.tStartRefresh)
-    trials.addData('print_spatial_freq.stopped', print_spatial_freq.tStopRefresh)
     trials.addData('grating.started', grating.tStartRefresh)
     trials.addData('grating.stopped', grating.tStopRefresh)
+    
     trialClock = core.Clock()
     t = 0
-    while t < maskdur:    # quits after some secs
+    while t < postmask:    # quits after some secs
     
         t = trialClock.getTime()
     
@@ -283,8 +270,10 @@ ct = {contrast:.3f},dur = {duration:.2f}''')
     
     # ------Prepare to start Routine "response"-------
     # update component parameters for each repeat
+    left_right.keys = []
+    left_right.rt = []
     # keep track of which components have finished
-    responseComponents = []
+    responseComponents = [left_right, message]
     for thisComponent in responseComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -308,6 +297,46 @@ ct = {contrast:.3f},dur = {duration:.2f}''')
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
+        # *left_right* updates
+        waitOnFlip = False
+        if left_right.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            left_right.frameNStart = frameN  # exact frame index
+            left_right.tStart = t  # local t and not account for scr refresh
+            left_right.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(left_right, 'tStartRefresh')  # time at next scr refresh
+            left_right.status = STARTED
+            # keyboard checking is just starting
+            waitOnFlip = True
+            win.callOnFlip(left_right.clock.reset)  # t=0 on next screen flip
+            win.callOnFlip(left_right.clearEvents, eventType='keyboard')  # clear events on next screen flip
+        if left_right.status == STARTED and not waitOnFlip:
+            theseKeys = left_right.getKeys(keyList=['left', 'right'], waitRelease=False)
+            if len(theseKeys):
+                theseKeys = theseKeys[0]  # at least one key was pressed
+                
+                # check for quit:
+                if "escape" == theseKeys:
+                    endExpNow = True
+                left_right.keys = theseKeys.name  # just the last key pressed
+                left_right.rt = theseKeys.rt
+                # was this 'correct'?
+                if (left_right.keys == str(corrAns)) or (left_right.keys == corrAns):
+                    left_right.corr = 1
+                else:
+                    left_right.corr = 0
+                # a response ends the routine
+                continueRoutine = False
+        
+        # *message* updates
+        if message.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            message.frameNStart = frameN  # exact frame index
+            message.tStart = t  # local t and not account for scr refresh
+            message.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(message, 'tStartRefresh')  # time at next scr refresh
+            message.setAutoDraw(True)
+        
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
             core.quit()
@@ -329,6 +358,23 @@ ct = {contrast:.3f},dur = {duration:.2f}''')
     for thisComponent in responseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
+    # check responses
+    if left_right.keys in ['', [], None]:  # No response was made
+        left_right.keys = None
+        # was no response the correct answer?!
+        if str(corrAns).lower() == 'none':
+           left_right.corr = 1;  # correct non-response
+        else:
+           left_right.corr = 0;  # failed to respond (incorrectly)
+    # store data for trials (TrialHandler)
+    trials.addData('left_right.keys',left_right.keys)
+    trials.addData('left_right.corr', left_right.corr)
+    if left_right.keys != None:  # we had a response
+        trials.addData('left_right.rt', left_right.rt)
+    trials.addData('left_right.started', left_right.tStartRefresh)
+    trials.addData('left_right.stopped', left_right.tStopRefresh)
+    trials.addData('message.started', message.tStartRefresh)
+    trials.addData('message.stopped', message.tStopRefresh)
     # the Routine "response" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     thisExp.nextEntry()

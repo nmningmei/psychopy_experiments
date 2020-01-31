@@ -12,7 +12,7 @@ masks = ['gauss']#,'raisedCos','cross']
 gap_durs = np.linspace(0.5,1,5,3) # 1. opaque to 0 transparent
 orientations = np.array([item for item in np.arange(45,180 - 45) if np.abs(item - 90) > 15])
 spatial_freqs = np.linspace(0.01,0.03,3) # 256x256 - .03~.06, 128x128 - .06~.1, 1024x1024 - .01~0.03
-durations = np.linspace(0.1,1,3)
+durations = np.linspace(0.1,1,3) # 0.2~0.05
 
 df = dict(contrast = [],
           mask = [],

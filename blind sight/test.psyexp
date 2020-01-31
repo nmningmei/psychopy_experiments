@@ -6,7 +6,7 @@
     <Param name="Completed URL" updates="None" val="" valType="str"/>
     <Param name="Data filename" updates="None" val="u'data/%s_%s_%s' % (expInfo['participant'], expName, expInfo['date'])" valType="code"/>
     <Param name="Enable Escape" updates="None" val="True" valType="bool"/>
-    <Param name="Experiment info" updates="None" val="{'participant': '', 'session': '001', 'im_size': '1024', 'premask': '0', 'postmask': '2'}" valType="code"/>
+    <Param name="Experiment info" updates="None" val="{'participant': '', 'session': '001', 'im_size': '512', 'postmask': '2'}" valType="code"/>
     <Param name="Force stereo" updates="None" val="True" valType="bool"/>
     <Param name="Full-screen window" updates="None" val="True" valType="bool"/>
     <Param name="HTML path" updates="None" val="html" valType="str"/>
@@ -57,7 +57,7 @@
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
         <Param name="wrapWidth" updates="constant" val="" valType="code"/>
       </TextComponent>
-      <GratingComponent name="grating">
+      <GratingComponent name="target">
         <Param name="blendmode" updates="constant" val="avg" valType="str"/>
         <Param name="color" updates="constant" val="$[1,1,1]" valType="str"/>
         <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
@@ -65,8 +65,8 @@
         <Param name="durationEstim" updates="None" val="" valType="code"/>
         <Param name="interpolate" updates="constant" val="nearest" valType="str"/>
         <Param name="mask" updates="set every repeat" val="$mask" valType="str"/>
-        <Param name="name" updates="None" val="grating" valType="code"/>
-        <Param name="opacity" updates="set every repeat" val="$opacity" valType="code"/>
+        <Param name="name" updates="None" val="target" valType="code"/>
+        <Param name="opacity" updates="constant" val="1." valType="code"/>
         <Param name="ori" updates="set every repeat" val="$orientation" valType="code"/>
         <Param name="phase" updates="constant" val="0" valType="code"/>
         <Param name="pos" updates="constant" val="(0, 0)" valType="code"/>
@@ -83,18 +83,42 @@
         <Param name="texture resolution" updates="constant" val="128" valType="code"/>
         <Param name="units" updates="None" val="pix" valType="str"/>
       </GratingComponent>
+      <TextComponent name="stim_mask_gap">
+        <Param name="color" updates="constant" val="white" valType="str"/>
+        <Param name="colorSpace" updates="constant" val="rgb" valType="str"/>
+        <Param name="disabled" updates="None" val="False" valType="bool"/>
+        <Param name="durationEstim" updates="None" val="" valType="code"/>
+        <Param name="flip" updates="constant" val="" valType="str"/>
+        <Param name="font" updates="constant" val="Arial" valType="str"/>
+        <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
+        <Param name="letterHeight" updates="constant" val="0.1" valType="code"/>
+        <Param name="name" updates="None" val="stim_mask_gap" valType="code"/>
+        <Param name="opacity" updates="constant" val="1" valType="code"/>
+        <Param name="ori" updates="constant" val="0" valType="code"/>
+        <Param name="pos" updates="constant" val="(0, 0)" valType="code"/>
+        <Param name="saveStartStop" updates="None" val="True" valType="bool"/>
+        <Param name="startEstim" updates="None" val="" valType="code"/>
+        <Param name="startType" updates="None" val="condition" valType="str"/>
+        <Param name="startVal" updates="None" val="$target.status == FINISHED" valType="code"/>
+        <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
+        <Param name="stopVal" updates="constant" val="$gap_dur" valType="code"/>
+        <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
+        <Param name="text" updates="constant" val="" valType="str"/>
+        <Param name="units" updates="None" val="from exp settings" valType="str"/>
+        <Param name="wrapWidth" updates="constant" val="" valType="code"/>
+      </TextComponent>
       <CodeComponent name="change_contrast">
-        <Param name="Begin Experiment" updates="constant" val="im_size = int(expInfo['im_size'])&amp;#10;&amp;#10;premask = int(expInfo['premask'])&amp;#10;postmask = int(expInfo['postmask'])&amp;#10;&amp;#10;k = 210&amp;#10;mask_directions = [k,k + 90]&amp;#10;&amp;#10;" valType="extendedCode"/>
+        <Param name="Begin Experiment" updates="constant" val="im_size = int(expInfo['im_size'])&amp;#10;&amp;#10;postmask = int(expInfo['postmask'])&amp;#10;&amp;#10;&amp;#10;" valType="extendedCode"/>
         <Param name="Begin JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="Begin JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="Begin Routine" updates="constant" val="grating.contrast = contrast&amp;#10;#gabor_tex = (&amp;#10;#visual.filters.makeGrating(res = im_size,&amp;#10;#    cycles = im_size * spatial_freq) *&amp;#10;#visual.filters.makeMask(matrixSize = im_size,&amp;#10;#        shape = 'gauss',range=[0,.01]))&amp;#10;#grating.tex = gabor_tex&amp;#10;#grating.tex = np.random.random([im_size,im_size])*2. - 1.&amp;#10;&amp;#10;#np.random.shuffle(mask_directions)&amp;#10;#INITIALISE SOME STIMULI&amp;#10;grating1 = visual.GratingStim(win, mask=&quot;gauss&quot;,&amp;#10;                              color=[1.0, 1.0, 1.0],&amp;#10;                              opacity=1.0,&amp;#10;                              size=(im_size, im_size),&amp;#10;                              units = 'pix',&amp;#10;                              sf=(0.02,0), ori=mask_directions[0])&amp;#10;&amp;#10;grating2 = visual.GratingStim(win, mask=&quot;gauss&quot;,&amp;#10;                              color=[1.0, 1.0, 1.0],&amp;#10;                              opacity=0.5,&amp;#10;                              size=(im_size, im_size),&amp;#10;                              units = 'pix',&amp;#10;                              sf=(.02,0), ori=mask_directions[1])&amp;#10;&amp;#10;&amp;#10;trialClock = core.Clock()&amp;#10;t = 0&amp;#10;while t &lt; premask:    # quits after some secs&amp;#10;&amp;#10;    t = trialClock.getTime()&amp;#10;&amp;#10;    grating1.setPhase(1*t)  # drift at 1Hz&amp;#10;    grating1.draw()  #redraw it&amp;#10;&amp;#10;    grating2.setPhase(2*t)    #drift at 2Hz&amp;#10;    grating2.draw()  #redraw it&amp;#10;&amp;#10;    win.flip()          #update the screen&amp;#10;&amp;#10;    #handle key presses each frame&amp;#10;    for keys in event.getKeys():&amp;#10;        if keys in ['escape','q']:&amp;#10;            core.quit()" valType="extendedCode"/>
+        <Param name="Begin Routine" updates="constant" val="target.contrast = contrast&amp;#10;#gabor_tex = (&amp;#10;#visual.filters.makeGrating(res = im_size,&amp;#10;#    cycles = im_size * spatial_freq) *&amp;#10;#visual.filters.makeMask(matrixSize = im_size,&amp;#10;#        shape = 'gauss',range=[0,.01]))&amp;#10;#grating.tex = gabor_tex&amp;#10;#grating.tex = np.random.random([im_size,im_size])*2. - 1.&amp;#10;&amp;#10;#np.random.shuffle(mask_directions)&amp;#10;#INITIALISE SOME STIMULI&amp;#10;#grating1 = visual.GratingStim(win, mask=&quot;gauss&quot;,&amp;#10;#                              color=[1.0, 1.0, 1.0],&amp;#10;#                              opacity=1.0,&amp;#10;#                              size=(im_size, im_size),&amp;#10;#                              units = 'pix',&amp;#10;#                              sf=(0.02,0), ori=mask_directions[0])&amp;#10;&amp;#10;#grating2 = visual.GratingStim(win, mask=&quot;gauss&quot;,&amp;#10;#                              color=[1.0, 1.0, 1.0],&amp;#10;#                              opacity=0.5,&amp;#10;#                              size=(im_size, im_size),&amp;#10;#                              units = 'pix',&amp;#10;#                              sf=(.02,0), ori=mask_directions[1])&amp;#10;ring = visual.RadialStim(&amp;#10;    win=win, name='ring',&amp;#10;    tex='sqrXsqr', mask = 'circle',&amp;#10;    size = (int(im_size/2),int(im_size/2)),units = 'pix',ori = 90,&amp;#10;    angularCycles = 0,radialCycles = 8,)&amp;#10;&amp;#10;" valType="extendedCode"/>
         <Param name="Code Type" updates="None" val="Py" valType="str"/>
         <Param name="Each Frame" updates="constant" val="" valType="extendedCode"/>
         <Param name="Each JS Frame" updates="constant" val="" valType="extendedCode"/>
         <Param name="End Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Experiment" updates="constant" val="" valType="extendedCode"/>
         <Param name="End JS Routine" updates="constant" val="" valType="extendedCode"/>
-        <Param name="End Routine" updates="constant" val="&amp;#10;trialClock = core.Clock()&amp;#10;t = 0&amp;#10;while t &lt; postmask:    # quits after some secs&amp;#10;&amp;#10;    t = trialClock.getTime()&amp;#10;&amp;#10;    grating1.setPhase(1*t)  # drift at 1Hz&amp;#10;    grating1.draw()  #redraw it&amp;#10;&amp;#10;    grating2.setPhase(2*t)    #drift at 2Hz&amp;#10;    grating2.draw()  #redraw it&amp;#10;&amp;#10;    win.flip()          #update the screen&amp;#10;&amp;#10;    #handle key presses each frame&amp;#10;    for keys in event.getKeys():&amp;#10;        if keys in ['escape','q']:&amp;#10;            core.quit()" valType="extendedCode"/>
+        <Param name="End Routine" updates="constant" val="&amp;#10;trialClock = core.Clock()&amp;#10;t = 0&amp;#10;while t &lt; postmask:    # quits after some secs&amp;#10;&amp;#10;    t = trialClock.getTime()&amp;#10;&amp;#10;    ring.draw()&amp;#10;&amp;#10;    win.flip()          #update the screen&amp;#10;&amp;#10;    #handle key presses each frame&amp;#10;    for keys in event.getKeys():&amp;#10;        if keys in ['escape','q']:&amp;#10;            core.quit()" valType="extendedCode"/>
         <Param name="disabled" updates="None" val="False" valType="bool"/>
         <Param name="name" updates="None" val="change_contrast" valType="code"/>
       </CodeComponent>
@@ -113,7 +137,7 @@
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="code"/>
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="" valType="code"/>
+        <Param name="stopVal" updates="constant" val="2" valType="code"/>
         <Param name="store" updates="constant" val="last key" valType="str"/>
         <Param name="storeCorrect" updates="constant" val="True" valType="bool"/>
         <Param name="syncScreenRefresh" updates="constant" val="True" valType="bool"/>
@@ -136,7 +160,7 @@
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="code"/>
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="" valType="code"/>
+        <Param name="stopVal" updates="constant" val="2" valType="code"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
         <Param name="text" updates="constant" val="&lt;-&gt;" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
@@ -157,7 +181,7 @@
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="code"/>
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="" valType="code"/>
+        <Param name="stopVal" updates="constant" val="2" valType="code"/>
         <Param name="store" updates="constant" val="last key" valType="str"/>
         <Param name="storeCorrect" updates="constant" val="False" valType="bool"/>
         <Param name="syncScreenRefresh" updates="constant" val="True" valType="bool"/>
@@ -180,7 +204,7 @@
         <Param name="startType" updates="None" val="time (s)" valType="str"/>
         <Param name="startVal" updates="None" val="0.0" valType="code"/>
         <Param name="stopType" updates="None" val="duration (s)" valType="str"/>
-        <Param name="stopVal" updates="constant" val="" valType="code"/>
+        <Param name="stopVal" updates="constant" val="2" valType="code"/>
         <Param name="syncScreenRefresh" updates="None" val="True" valType="bool"/>
         <Param name="text" updates="constant" val="?" valType="str"/>
         <Param name="units" updates="None" val="from exp settings" valType="str"/>
@@ -196,7 +220,7 @@
         <Param name="flip" updates="constant" val="" valType="str"/>
         <Param name="font" updates="constant" val="Arial" valType="str"/>
         <Param name="languageStyle" updates="None" val="LTR" valType="str"/>
-        <Param name="letterHeight" updates="constant" val="0.1" valType="code"/>
+        <Param name="letterHeight" updates="constant" val="0.05" valType="code"/>
         <Param name="name" updates="None" val="intro" valType="code"/>
         <Param name="opacity" updates="constant" val="1" valType="code"/>
         <Param name="ori" updates="constant" val="0" valType="code"/>

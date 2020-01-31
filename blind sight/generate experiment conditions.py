@@ -9,27 +9,27 @@ import pandas as pd
 
 contrasts = np.linspace(0.1,.2,3) # 1 unchange, 0-1 decrease, negative inverted
 masks = ['gauss']#,'raisedCos','cross']
-opacities = np.linspace(0.5,1,5,3) # 1. opaque to 0 transparent
+gap_durs = np.linspace(0.5,1,5,3) # 1. opaque to 0 transparent
 orientations = np.array([item for item in np.arange(45,180 - 45) if np.abs(item - 90) > 15])
 spatial_freqs = np.linspace(0.01,0.03,3) # 256x256 - .03~.06, 128x128 - .06~.1, 1024x1024 - .01~0.03
 durations = np.linspace(0.1,1,3)
 
 df = dict(contrast = [],
           mask = [],
-          opacity = [],
+          gap_dur = [],
           orientation = [],
           spatial_freq = [],
           duration = [],
           )
 for contrast in contrasts:
     for mask in masks:
-        for opacity in opacities:
+        for gap_dur in gap_durs:
             for orientation in orientations:
                 for spatial_freq in spatial_freqs:
                     for duration in durations:
                         df['contrast'].append(contrast)
                         df['mask'].append(mask)
-                        df['opacity'].append(opacity)
+                        df['gap_dur'].append(gap_dur)
                         df['orientation'].append(orientation)
                         df['spatial_freq'].append(spatial_freq)
                         df['duration'].append(duration)

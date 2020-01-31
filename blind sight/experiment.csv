@@ -1,4 +1,4 @@
-contrast,mask,opacity,orientation,spatial_freq,duration,corrAns
+contrast,mask,gap_dur,orientation,spatial_freq,duration,corrAns
 0.1,gauss,0.5,45,0.01,0.1,right
 0.1,gauss,0.5,45,0.01,0.55,right
 0.1,gauss,0.5,45,0.01,1.0,right

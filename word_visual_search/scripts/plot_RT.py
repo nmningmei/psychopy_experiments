@@ -26,7 +26,7 @@ fig,axes = plt.subplots(figsize = (8,12),
                         sharex = True,
                         sharey = True,
                         )
-for f,ax in zip(working_data,axes.flatten()): 
+for f,ax in zip(working_data,axes.flatten()[:2]): 
     df = pd.read_csv(f)
     ax = sns.barplot(x = 'set_size',
                      y = 'just_press.rt',

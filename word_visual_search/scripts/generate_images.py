@@ -17,11 +17,13 @@ from utils import single_langauge,switching_language
 working_data = '../data/SEMGEN_Final_Stimuli.csv'
 df_words = pd.read_csv(working_data,sep = ';',encoding='latin-1')
 
-n_distractors = np.arange(2,16,3)
+np.random.seed(12345)
+n_distractors = [4,8,16,32]
 n_trials = 60
-grid_size = 10
+grid_size = 12
 tol = 0.7
 font_size = 16
+high = 4
 
 # single langage -- no switch
 # spanish - target, basque - distractor
@@ -33,6 +35,7 @@ df_to_save = single_langauge(df_words,target,distractor,
                      grid_size = grid_size,
                      tol = tol,
                      font_size = font_size,
+                     high = high,
                      )
 df_to_save.to_csv(f'../data/{target}.csv',index = False)
 
@@ -45,6 +48,7 @@ df_to_save = single_langauge(df_words,target,distractor,
                      grid_size = grid_size,
                      tol = tol,
                      font_size = font_size,
+                     high = high,
                      )
 df_to_save.to_csv(f'../data/{target}.csv',index = False)
 
@@ -56,6 +60,7 @@ df_to_save = switching_language(df_words,
                     tol = tol,
                     grid_size = grid_size,
                     font_size = font_size,
+                    high = high,
                     )
 df_to_save.to_csv('../data/mixed.csv',index = False)
 

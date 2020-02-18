@@ -26,7 +26,6 @@ def single_langauge(df,
     targets = df[target].values.copy()
     distractor = df[distractor].values.copy()
     
-    np.random.seed(12345)
     set_sizes = np.random.choice(n_distractors,size = n_trials,)
     positions = []
     for set_size in set_sizes:
@@ -55,15 +54,15 @@ def single_langauge(df,
         plt.close('all')
         fig,ax = plt.subplots(figsize=(grid_size,grid_size))
         for word,(x,y),rotation in zip(words,position,rotations):
-            ax.text(x * grid_size,
-                    y * grid_size,
+            ax.text(x,
+                    y,
                     word,
                     ha = 'center',
                     fontsize = font_size,
                     rotation = rotation,
                     )
-        ax.set(xlim=(0,grid_size),
-               ylim=(0,grid_size))
+        ax.set(xlim=(low,high),
+               ylim=(low,high))
         ax.axis('off')
         fig.savefig(f'../figures/{target}_{ii}.jpeg',
                     bbox_inches = 'tight',)
@@ -96,7 +95,6 @@ def switching_language(df,
                     break
         positions.append(temp)
     
-    np.random.seed(12345)
     basque_words = np.random.choice(df['Basque'].values,
                                     size = int(len(positions) / 2),
                                     replace = False,)
@@ -113,6 +111,7 @@ def switching_language(df,
               target_word = [],
               distract_words = [],
               image_path = [],
+              word_type = [],
               )
     for ii,(position,sampled_word,word_type_) in enumerate(zip(positions,sampled_words,word_type)):
         target_col = word_type_
@@ -129,15 +128,15 @@ def switching_language(df,
         plt.close('all')
         fig,ax = plt.subplots(figsize=(grid_size,grid_size))
         for word,(x,y),rotation in zip(words,position,rotations):
-            ax.text(x * grid_size,
-                    y * grid_size,
+            ax.text(x,
+                    y,
                     word,
                     ha = 'center',
                     fontsize = font_size,
                     rotation = rotation,
                     )
-        ax.set(xlim=(0,grid_size),
-               ylim=(0,grid_size))
+        ax.set(xlim=(low,high),
+               ylim=(low,high))
         ax.axis('off')
         fig.savefig(f'../figures/mixed_{ii}.jpeg',
                     bbox_inches = 'tight',)
@@ -148,6 +147,7 @@ def switching_language(df,
         res['target_word'].append(target_word)
         res['distract_words'].append(','.join(list(distract_word)))
         res['image_path'].append(f'../figures/mixed_{ii}.jpeg')
+        res['word_type'].append(word_type_)
         
     
     return pd.DataFrame(res)

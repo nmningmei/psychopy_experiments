@@ -5,6 +5,7 @@ psychopy psychophysics experiments
 1. Anaconda3 with python3.6+
 2. psychopy3.+
 3. pip install pyglet==1.3.2 <- downgrade for font size
+4. optional, seaborn==0.10.0
 
 # install in MAC
 1. [install Anaconda3](https://repo.anaconda.com/archive/Anaconda3-2019.10-MacOSX-x86_64.sh)

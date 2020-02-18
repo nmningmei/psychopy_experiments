@@ -4,7 +4,7 @@
     <Param name="Audio latency priority" updates="None" val="use prefs" valType="str"/>
     <Param name="Audio lib" updates="None" val="use prefs" valType="str"/>
     <Param name="Completed URL" updates="None" val="" valType="str"/>
-    <Param name="Data filename" updates="None" val="u'../results/%s/%s_%s' % (expInfo['participant'], expName, expInfo['date'])" valType="code"/>
+    <Param name="Data filename" updates="None" val="u'../results/%s/%s_%s' % (expInfo['participant'], expInfo['language'], expInfo['date'])" valType="code"/>
     <Param name="Enable Escape" updates="None" val="True" valType="bool"/>
     <Param name="Experiment info" updates="None" val="{'participant': 'test', 'session': '001', 'language': 'mixed'}" valType="code"/>
     <Param name="Force stereo" updates="None" val="True" valType="bool"/>

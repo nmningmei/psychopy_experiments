@@ -16,8 +16,10 @@ from tensorflow.keras.preprocessing.sequence import TimeseriesGenerator
 
 from matplotlib import pyplot as plt
 import seaborn as sns
+sns.set_style('whitegrid')
+sns.set_context('poster')
 
-sub_name = 'test'
+sub_name = 'patxi'
 working_dir = '../results/'
 saving_dir = '../result_figures'
 if not os.path.exists(os.path.join(saving_dir,sub_name)):
@@ -33,7 +35,7 @@ for f,g in zip(working_data,psy_data):
     dfs[language] = df_temp
 
 
-fig,axes = plt.subplots(figsize = (8,12),
+fig,axes = plt.subplots(figsize = (8,16),
                         nrows = 3,
                         sharey = True,
                         )
@@ -47,7 +49,8 @@ for (language),ax in zip(['spanish','basque','mixed'],axes.flatten()[:2]):
                      )
     ax.set(
            xlabel = 'Set Size',
-           ylabel = 'Reaction Time (sec)')
+           ylabel = 'Reaction Time (sec)',
+           title = f"language = {language}")
 
 ax = axes.flatten()[-1]
 df = dfs['mixed']
@@ -71,7 +74,9 @@ ax = sns.barplot(x = 'word_type',
                  seed = 12345,
                  )
 ax.set(xlabel = 'Language',
-       ylabel = 'Reaction Time (sec)')
+       ylabel = 'Reaction Time (sec)',
+       title = 'Mixed')
+fig.tight_layout()
 
 fig.savefig(os.path.join(saving_dir,sub_name,'results.jpeg'),
             dpi = 300,

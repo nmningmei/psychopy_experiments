@@ -18,8 +18,8 @@ working_data = '../data/SEMGEN_Final_Stimuli.csv'
 df_words = pd.read_csv(working_data,sep = ';',encoding='latin-1')
 
 np.random.seed(12345)
-n_distractors = [4,8,16,32]
-n_trials = 60
+n_distractors = [4,8,20]
+n_trials = 21
 grid_size = 12
 tol = 0.7
 font_size = 16

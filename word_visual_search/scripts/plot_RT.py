@@ -17,7 +17,7 @@ from tensorflow.keras.preprocessing.sequence import TimeseriesGenerator
 from matplotlib import pyplot as plt
 import seaborn as sns
 
-sub_name = 'patxi'
+sub_name = 'test'
 working_dir = '../results/'
 saving_dir = '../result_figures'
 if not os.path.exists(os.path.join(saving_dir,sub_name)):
